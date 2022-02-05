@@ -1,13 +1,11 @@
 import { createCookieSessionStorage } from 'remix'
 import { Theme, isTheme } from './theme-provider'
 
-declare var COOKIE_SECRET: string
-
 const themeStorage = createCookieSessionStorage({
   cookie: {
     name: 'theme',
     secure: true,
-    secrets: [COOKIE_SECRET],
+    secrets: [process.env.COOKIE_SECRET as string],
     sameSite: 'lax',
     path: '/',
     httpOnly: true,
