@@ -10,7 +10,7 @@ async function getCommit() {
   if (!commit) return { sha: '' }
   try {
     const res = await fetch(
-      `https://api.github.com/repos/ahmed-riad-1/ar1.dev/commits/${commit}`,
+      `https://api.github.com/repos/ahmedriad1/ar1.dev/commits/${commit}`,
     )
     const data = await res.json()
     return {
