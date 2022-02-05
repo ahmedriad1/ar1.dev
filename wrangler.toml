@@ -1,0 +1,24 @@
+name = "worker"
+type = "javascript"
+compatibility_date = "2021-12-06"
+
+route = "ar1.dev/*"
+workers_dev = true
+
+kv_namespaces = [
+  { binding = "CONTENT",  preview_id = "3e3bb6bbb89641c2850c135af2a8c3a5", id = "61bae27641594c6eac12dcc6f94c549a" }
+]
+
+[site]
+bucket = "./public"
+entry-point = "."
+
+[build]
+command = "npm run build:worker"
+watch_dir = "build/index.js"
+
+[build.upload]
+format="service-worker"
+
+[miniflare]
+kv_persist = true
