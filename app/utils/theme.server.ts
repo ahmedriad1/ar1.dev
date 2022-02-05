@@ -1,21 +1,22 @@
 import { createCookieSessionStorage } from 'remix'
 import { Theme, isTheme } from './theme-provider'
 
+declare var COOKIE_SECRET: string
+
 const themeStorage = createCookieSessionStorage({
   cookie: {
-    name: 'KCD_theme',
+    name: 'theme',
     secure: true,
-    secrets: ['sadasdasdgahsudjhaushdasd'],
+    secrets: [COOKIE_SECRET],
     sameSite: 'lax',
     path: '/',
-    // no theme for you on my 100th birthday! 😂
-    expires: new Date('2088-10-18'),
     httpOnly: true,
   },
 })
 
 async function getThemeSession(request: Request) {
   const session = await themeStorage.getSession(request.headers.get('Cookie'))
+
   return {
     getTheme: () => {
       const themeValue = session.get('theme')

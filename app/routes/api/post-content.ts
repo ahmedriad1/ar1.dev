@@ -1,5 +1,5 @@
 import { ActionFunction, json } from 'remix'
-import { validateToken } from '~/utils/postApiKey.server'
+import { validateToken } from '~/utils/post-api-key.server'
 declare var CONTENT: KVNamespace
 
 export const action: ActionFunction = async ({ request }) => {

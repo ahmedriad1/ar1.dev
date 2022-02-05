@@ -1,4 +1,4 @@
-import { validateToken } from '~/utils/postApiKey.server'
+import { validateToken } from '~/utils/post-api-key.server'
 import { ActionFunction, json } from 'remix'
 declare var CONTENT: KVNamespace
 
