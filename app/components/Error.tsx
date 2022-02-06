@@ -7,7 +7,11 @@ import Button from './Button'
 import { ArrowNarrowLeftIcon } from '@heroicons/react/outline'
 import { ErrorOverlay } from './Overlay'
 
-export function RedBox({ error }: { error: Error }) {
+interface RedBoxProps {
+  error: Error
+}
+
+export const RedBox = ({ error }: RedBoxProps) => {
   const [isVisible, setIsVisible] = useState(true)
   const frames = errorStack.parse(error)
 
@@ -15,9 +19,7 @@ export function RedBox({ error }: { error: Error }) {
     <div
       className={clsx(
         'fixed z-[99999999] inset-0 flex items-center justify-center transition',
-        {
-          'opacity-0 pointer-events-none': !isVisible,
-        },
+        !isVisible && 'opacity-0 pointer-events-none',
       )}
     >
       <button
@@ -48,16 +50,15 @@ export function RedBox({ error }: { error: Error }) {
   )
 }
 
-function ErrorPage({
-  error,
-  heroProps,
-}: {
+interface ErrorPageProps {
   error?: Error
   heroProps: {
     title: string
     subtitle: string
   }
-}) {
+}
+
+export const ErrorPage = ({ error, heroProps }: ErrorPageProps) => {
   return (
     <div className="flex-1 flex flex-col justify-center items-center w-full h-screen text-center relative pt-12 overflow-hidden">
       <ErrorOverlay />
@@ -76,7 +77,7 @@ function ErrorPage({
   )
 }
 
-function FourOhFour() {
+export const FourOhFour = () => {
   const matches = useMatches()
   const last = matches[matches.length - 1]
   const pathname = last?.pathname
@@ -91,7 +92,11 @@ function FourOhFour() {
   )
 }
 
-function ServerError({ error }: { error?: Error }) {
+interface ServerErrorProps {
+  error?: Error
+}
+
+export const ServerError = ({ error }: ServerErrorProps) => {
   const matches = useMatches()
   const last = matches[matches.length - 1]
   const pathname = last?.pathname
@@ -106,5 +111,3 @@ function ServerError({ error }: { error?: Error }) {
     />
   )
 }
-
-export { ErrorPage, ServerError, FourOhFour }

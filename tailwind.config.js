@@ -15,6 +15,9 @@ module.exports = {
         light: 'var(--light)',
         accent: 'var(--accent)',
       },
+      transitionTimingFunction: {
+        'out-expo': 'cubic-bezier(0.215, 0.61, 0.355, 1)',
+      },
     },
   },
   variants: {},

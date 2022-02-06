@@ -5,15 +5,13 @@ import { ChevronLeftIcon } from '@heroicons/react/outline'
 import { ErrorOverlay } from './Overlay'
 import { RedBox } from './Error'
 
-export default function ErrorPage({
-  error,
-  msg,
-  subMsg,
-}: {
+interface ErrorPageProps {
   error?: Error
   msg: string
   subMsg?: string
-}) {
+}
+
+export default function ErrorPage({ error, msg, subMsg }: ErrorPageProps) {
   return (
     <div className="relative w-full h-screen text-center flex justify-center items-center flex-col overflow-hidden">
       {error && process.env.NODE_ENV === 'development' ? (

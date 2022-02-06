@@ -12,18 +12,19 @@ import calculateReadingTime from 'reading-time'
 // import embedPlugin from './plugins/embedPlugin.mjs'
 import { Command } from 'commander/esm.mjs'
 ;(async function () {
-  config()
+  config({ path: '../../.env' })
   const program = new Command()
   program
     .requiredOption(
       '-R, --root <path>',
-      'Root path (content is relative to root',
+      'Root path (content is relative to root)',
     )
     .option('-f, --file [files...]', 'Files to compile')
     .option('-j, --json', 'Output JSON')
 
   program.parse(process.argv)
   const options = program.opts()
+
   if (!process.env.API_URL) {
     console.error('missing API_URL')
     process.exit(1)

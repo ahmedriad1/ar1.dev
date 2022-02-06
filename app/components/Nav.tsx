@@ -1,11 +1,10 @@
 import clsx from 'clsx'
 import { Link, useResolvedPath, useLocation } from 'remix'
 import Container from './Container'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Theme, useTheme } from '~/utils/theme-provider'
 import { MenuIcon, MoonIcon, SunIcon, XIcon } from '@heroicons/react/outline'
 import { useSSRLayoutEffect } from '~/utils/other'
-import type { PropsWithChildren } from 'react'
 import { Disclosure } from '@headlessui/react'
 
 interface NavLinkProps {
@@ -13,11 +12,7 @@ interface NavLinkProps {
   exact?: boolean
 }
 
-function NavLink({
-  children,
-  to,
-  exact = false,
-}: PropsWithChildren<NavLinkProps>) {
+const NavLink: React.FC<NavLinkProps> = ({ children, to, exact = false }) => {
   const resolved = useResolvedPath(to).pathname
   const location = useLocation()
   const active = exact
@@ -75,10 +70,8 @@ export default function Nav() {
       className={({ open }) => {
         return clsx(
           'py-8 h-auto flex flex-col justify-center fixed top-0 left-0 w-full z-50 transition-colors border-b border-transparent',
-          {
-            'bg-white/75 dark:bg-[#1e2030]/75 backdrop-blur border-gray-300 dark:border-gray-600':
-              scrolled || open,
-          },
+          (scrolled || open) &&
+            'bg-white/75 dark:bg-[#1e2030]/75 backdrop-blur border-gray-300 dark:border-gray-600',
         )
       }}
     >

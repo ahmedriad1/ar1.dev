@@ -1,11 +1,9 @@
 import clsx from 'clsx'
 import type { HTMLAttributes } from 'react'
 
-const Card: React.FC<HTMLAttributes<HTMLDivElement>> = ({
-  children,
-  className,
-  ...props
-}) => {
+interface CardProps extends HTMLAttributes<HTMLDivElement> {}
+
+const Card: React.FC<CardProps> = ({ children, className, ...props }) => {
   return (
     <div
       className={clsx(

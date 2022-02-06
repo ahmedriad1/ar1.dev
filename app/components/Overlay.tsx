@@ -1,9 +1,8 @@
 import clsx from 'clsx'
 
-export const Overlay: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
-  className,
-  ...props
-}) => (
+interface OverlayProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export const Overlay: React.FC<OverlayProps> = ({ className, ...props }) => (
   <div
     className={clsx(
       'absolute top-0 left-0 w-full h-full pointer-events-none z-[-999999] blur-3xl scale-125 bg-no-repeat',

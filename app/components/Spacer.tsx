@@ -16,5 +16,5 @@ export default function Spacer({
   size: keyof typeof spacerSizes
   className?: string
 }) {
-  return <div className={clsx(className, spacerSizes[size])} />
+  return <div className={clsx(spacerSizes[size], className)} />
 }

@@ -9,6 +9,8 @@ export const action: ActionFunction = async ({ request }) => {
 
     const data = await request.json()
     await CONTENT.put(data.slug, JSON.stringify(data))
+    console.log(`Content updated: ${data.slug}`)
+
     return json({ success: true })
   } catch (e) {
     //@ts-expect-error

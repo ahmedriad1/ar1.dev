@@ -1,8 +1,9 @@
 const chokidar = require('chokidar')
 const fs = require('fs')
+const path = require('path')
 const exec = require('util').promisify(require('child_process').exec)
 
-const cacheFilePath = './content/.cache.json'
+const cacheFilePath = path.join(__dirname, '../content/.cache.json')
 const force = true
 
 ;(async function () {
@@ -10,59 +11,64 @@ const force = true
 })()
 
 async function main() {
+  console.log('🔍 Now watching content...')
+
   // read from cache
   let cache = {}
 
-  if (fs.existsSync(cacheFilePath))
+  if (fs.existsSync(cacheFilePath)) {
+    console.log('📂 Found cache file, reading...')
     cache = JSON.parse(fs.readFileSync(cacheFilePath))
+  }
 
   try {
-    chokidar.watch('./content').on('all', async (event, path) => {
-      if (event === 'addDir') return
+    chokidar
+      .watch(path.join(__dirname, '../content'), { cwd: '.' })
+      .on('all', async (event, path) => {
+        if (event === 'addDir') return
 
-      const { match, dir, file } = validContentPath(path)
-      if (!match) return
+        const { match, dir, file } = validContentPath(path)
+        if (!match) return
 
-      console.log({ event, path, dir, file })
-      const lastModified = fs.statSync(path).mtimeMs
-      // check for changes
-      if (!force && cache[path] && cache[path] === lastModified) {
-        console.log(`${path} has not changed`)
-        return
-      }
+        console.log({ event, path, dir, file })
+        const lastModified = fs.statSync(path).mtimeMs
+        // check for changes
+        if (!force && cache[path] && cache[path] === lastModified) {
+          console.log(`✅ ${path} has not changed, using cache`)
+          return
+        }
 
-      if (file === '_series.mdx') {
-        const { frontmatter, filelist } = await parseSeries(path)
-        console.log({ frontmatter, filelist })
-        updateCache(cache, dir, {
-          type: 'series',
-          frontmatter,
-          filelist,
+        if (file === '_series.mdx') {
+          const { frontmatter, filelist } = await parseSeries(path)
+          console.log({ frontmatter, filelist })
+          updateCache(cache, dir, {
+            type: 'series',
+            frontmatter,
+            filelist,
+            lastModified,
+          })
+          return
+        }
+
+        const parts = dir.split('/')
+        let series = undefined
+        if (parts.length >= 3) {
+          series = parts.slice(0, 3).join('/')
+          if (cache[series]?.type === 'series')
+            console.log(`⛓️ Part of series ${series}`)
+
+          if (file === 'index.mdx') path = dir // just compile the directory
+        }
+
+        const results = await doCompile(path)
+        const { hash } = results[path]
+        console.log(results)
+        updateCache(cache, path, {
+          series,
           lastModified,
+          hash,
         })
-        return
-      }
-
-      const parts = dir.split('/')
-      let series = undefined
-      if (parts.length >= 3) {
-        series = parts.slice(0, 3).join('/')
-        if (cache[series]?.type === 'series')
-          console.log(`Part of series ${series}`)
-
-        if (file === 'index.mdx') path = dir // just compile the directory
-      }
-
-      console.log(`compling ${path}`)
-      const results = await doCompile(path)
-      const { hash } = results[path]
-      console.log(results)
-      updateCache(cache, path, {
-        series,
-        lastModified,
-        hash,
       })
-    })
   } catch (e) {
     console.error(e)
   }
@@ -83,12 +89,13 @@ async function doCompile(path) {
 }
 
 function validContentPath(contentPath) {
-  const match = /\/?(?<dir>content\/(?:.*))\/(?<file>[^.]+\.mdx)$/gm.exec(
-    contentPath,
-  )
+  const match =
+    contentPath.startsWith('content\\blog\\') && contentPath.endsWith('.mdx')
   if (!match) return { match: false }
-  const { dir, file } = match.groups
-  return { match: true, dir, file }
+  const dir = contentPath.split('\\')
+  const file = dir.pop()
+  // const { dir, file } = match.groups
+  return { match: true, dir: dir.join('\\'), file }
 }
 
 function parseSeries(path) {

@@ -17,7 +17,6 @@ let base16Theme
 async function loadBase16() {
   if (base16Theme) return base16Theme
   const base16Path = path.resolve('plugins/shiki/base16.json')
-  console.log(`Loading base16 theme from ${base16Path} ...`)
   return shiki.loadTheme(base16Path)
 }
 
