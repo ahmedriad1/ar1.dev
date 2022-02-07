@@ -74,23 +74,28 @@ import { Command } from 'commander/esm.mjs'
     } else mdxSource = await fsp.readFile(fullPath, 'utf8')
 
     const readingTime = calculateReadingTime(mdxSource)
-    const { default: gfm } = await import('remark-gfm')
-    const { default: shikiCodeBlock } = await import(
-      './plugins/shiki/index.mjs'
-    )
+
+    const [
+      { default: gfm },
+      { default: shikiCodeBlock },
+      ImageComponent,
+      OtherUtils,
+      Clsx,
+    ] = await Promise.all([
+      import('remark-gfm'),
+      import('./plugins/shiki/index.mjs'),
+      fsp.readFile('../../app/components/Image.tsx', 'utf8'),
+      fsp.readFile('../../app/utils/other.ts', 'utf8'),
+      fsp.readFile('./node_modules/clsx/dist/clsx.js', 'utf8'),
+    ])
+
     const { frontmatter, code } = await bundleMDX({
       source: mdxSource,
       files: {
         ...files,
-        '~/Image.tsx': await fsp.readFile(
-          '../../app/components/Image.tsx',
-          'utf8',
-        ),
-        '~/utils/other': await fsp.readFile(
-          '../../app/utils/other.tsx',
-          'utf8',
-        ),
-        clsx: await fsp.readFile('./node_modules/clsx/dist/clsx.js', 'utf8'),
+        '~/Image.tsx': ImageComponent,
+        '~/utils/other': OtherUtils,
+        clsx: Clsx,
       },
       xdmOptions(options) {
         options.remarkPlugins = [
