@@ -8,8 +8,7 @@ import {
 } from 'remix'
 import { getMDXComponent } from '~/utils/mdx.client'
 import proseStyles from '~/styles/prose.css'
-import { config } from '~/utils/constants'
-import { Post } from '~/types'
+import { Handle, Post } from '~/types'
 import Container from '~/components/Container'
 import MdxViewer from '~/components/MdxViewer'
 import { useMemo } from 'react'
@@ -19,8 +18,18 @@ import DateFormatter from '~/components/Date'
 import Image from '~/components/Image'
 import { isBrowser } from '~/utils/other'
 import { getSeoImage, getSocialMetas } from '~/utils/seo'
+import { getAllPosts, getPostBySlug } from '~/utils/posts.server'
 
-declare var CONTENT: KVNamespace
+export const handle: Handle = {
+  id: 'blog-post',
+  getSitemapEntries: async () => {
+    const posts = await getAllPosts()
+
+    return posts.map(post => {
+      return { route: `/blog/${post.slug}`, priority: 0.7 }
+    })
+  },
+}
 
 export const links: LinksFunction = () => [
   {
@@ -40,17 +49,12 @@ type LoaderData = {
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const { slug } = params
-
   if (!slug) throw new Response('Not Found', { status: 404 })
 
-  const data = await CONTENT.get(`blog/${slug}`, 'json')
-
+  const data = await getPostBySlug(slug)
   if (!data) throw new Response('Not Found', { status: 404 })
 
-  const { frontmatter, code, html } = data as Post
-  // const weakHash = `W/"${hash}"`
-  // const etag = request.headers.get('If-None-Match')
-  // if (etag === weakHash) return new Response(null, { status: 304 })
+  const { frontmatter, code, html } = data
 
   const post: LoaderData = {
     slug,

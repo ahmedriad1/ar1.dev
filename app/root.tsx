@@ -25,8 +25,12 @@ import clsx from 'clsx'
 import { getThemeSession } from './utils/theme.server'
 import type { MetaFunction, LinksFunction } from 'remix'
 import Footer from './components/Footer'
-import { config } from './utils/constants'
 import { getSocialMetas } from './utils/seo'
+import { Handle } from './types'
+
+export const handle: Handle = {
+  id: 'root',
+}
 
 export const links: LinksFunction = () => {
   return [

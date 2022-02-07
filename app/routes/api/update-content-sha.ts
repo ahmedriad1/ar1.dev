@@ -1,5 +1,5 @@
 import { validateToken } from '~/utils/post-api-key.server'
-import { ActionFunction, json } from 'remix'
+import { ActionFunction, json, redirect } from 'remix'
 declare var CONTENT: KVNamespace
 
 export const action: ActionFunction = async ({ request }) => {
@@ -14,3 +14,5 @@ export const action: ActionFunction = async ({ request }) => {
     return json({ message: e.message, stack: e.stack })
   }
 }
+
+export const loader = () => redirect('/', { status: 404 })

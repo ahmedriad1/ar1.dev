@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ar1.dev/sitemap.xml

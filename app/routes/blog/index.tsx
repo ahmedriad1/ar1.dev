@@ -4,10 +4,14 @@ import Card from '~/components/Card'
 import Container from '~/components/Container'
 import Image from '~/components/Image'
 import { H3 } from '~/components/Typography'
-import type { Post } from '~/types'
+import type { Handle, Post } from '~/types'
 import { config } from '~/utils/constants'
+import { getAllPosts } from '~/utils/posts.server'
 
-declare var CONTENT: KVNamespace
+export const handle: Handle = {
+  id: 'blog',
+  getSitemapEntries: () => [{ route: `/blog`, priority: 0.7 }],
+}
 
 type LoaderData = {
   posts: {
@@ -17,15 +21,7 @@ type LoaderData = {
 }
 
 export const loader: LoaderFunction = async () => {
-  const slugs = await CONTENT.list({ prefix: 'blog/' })
-
-  const posts = await Promise.all(
-    slugs.keys.map(async ({ name }) => {
-      const data = await CONTENT.get(name, 'json')
-      const { slug, frontmatter } = data as Post
-      return { slug: slug.split('/')[1], frontmatter }
-    }),
-  )
+  const posts = await getAllPosts()
 
   const data: LoaderData = {
     posts,
@@ -33,6 +29,7 @@ export const loader: LoaderFunction = async () => {
 
   return json(data)
 }
+
 export const meta: MetaFunction = () => ({
   title: `Blog - ${config.title}`,
 })
