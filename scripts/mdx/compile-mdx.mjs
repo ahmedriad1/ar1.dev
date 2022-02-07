@@ -86,6 +86,11 @@ import { Command } from 'commander/esm.mjs'
           '../../app/components/Image.tsx',
           'utf8',
         ),
+        '~/utils/other': await fsp.readFile(
+          '../../app/utils/other.tsx',
+          'utf8',
+        ),
+        clsx: await fsp.readFile('./node_modules/clsx/dist/clsx.js', 'utf8'),
       },
       xdmOptions(options) {
         options.remarkPlugins = [
