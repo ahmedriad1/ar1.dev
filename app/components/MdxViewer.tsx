@@ -1,10 +1,9 @@
 import clsx from 'clsx'
 import type { HTMLAttributes } from 'react'
 
-export default function MdxViewer({
-  className,
-  ...props
-}: HTMLAttributes<HTMLDivElement>) {
+interface MdxViewerProps extends HTMLAttributes<HTMLDivElement> {}
+
+export default function MdxViewer({ className, ...props }: MdxViewerProps) {
   return (
     <article
       className={clsx(
@@ -12,21 +11,6 @@ export default function MdxViewer({
         className,
       )}
       {...props}
-    >
-      {/* <MDXRemote
-        {...children}
-        components={{
-          img: props => (
-            <div className='aspect-[2/1]'>
-              <Image
-                {...props}
-                className='object-cover w-full h-full rounded-lg'
-                alt='Image'
-              />
-            </div>
-          ),
-        }}
-      /> */}
-    </article>
+    />
   )
 }

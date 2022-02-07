@@ -6,17 +6,14 @@ import {
   MetaFunction,
   useLoaderData,
 } from 'remix'
-import { getMDXComponent } from '~/utils/mdx.client'
+import { useMdxComponent } from '~/utils/mdx'
 import proseStyles from '~/styles/prose.css'
 import { Handle, Post } from '~/types'
 import Container from '~/components/Container'
-import MdxViewer from '~/components/MdxViewer'
-import { useMemo } from 'react'
 import Spacer from '~/components/Spacer'
 import { H1, H6 } from '~/components/Typography'
 import DateFormatter from '~/components/Date'
 import Image from '~/components/Image'
-import { isBrowser } from '~/utils/other'
 import { getSeoImage, getSocialMetas } from '~/utils/seo'
 import { getAllPosts, getPostBySlug } from '~/utils/posts.server'
 
@@ -43,8 +40,8 @@ export const headers: HeadersFunction = ({ loaderHeaders }) => loaderHeaders
 type LoaderData = {
   slug: string
   frontmatter: Post['frontmatter']
-  html: string
   code?: string
+  html: string
 }
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -86,12 +83,7 @@ export let meta: MetaFunction = ({ data }) => {
 
 export default function Post() {
   const { frontmatter, code, html } = useLoaderData<LoaderData>()
-  const isClient = isBrowser()
-  // on client only
-  const Component = useMemo(
-    () => (isClient && code ? getMDXComponent(code) : null),
-    [code, isClient],
-  )
+  const MdxComponent = useMdxComponent({ code, html })
 
   return (
     <Container layout>
@@ -121,13 +113,7 @@ export default function Post() {
         </div>
       </div>
 
-      {Component ? (
-        <MdxViewer className="mt-10">
-          <Component />
-        </MdxViewer>
-      ) : (
-        <MdxViewer dangerouslySetInnerHTML={{ __html: html }} />
-      )}
+      {MdxComponent ? <MdxComponent className="mt-10" /> : null}
     </Container>
   )
 }

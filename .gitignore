@@ -8,3 +8,4 @@ app/styles/tailwind.css
 dist
 /public/build
 .env
+pm2.config.js

@@ -6,6 +6,8 @@ import { Overlay } from '~/components/Overlay'
 import Spacer from '~/components/Spacer'
 import { H3 } from '~/components/Typography'
 
+// const a = getMiniflareBindings();
+
 export default function Home() {
   return (
     <>

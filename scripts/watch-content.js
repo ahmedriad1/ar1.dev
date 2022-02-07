@@ -89,13 +89,13 @@ async function doCompile(path) {
 }
 
 function validContentPath(contentPath) {
-  const match =
-    contentPath.startsWith('content\\blog\\') && contentPath.endsWith('.mdx')
+  const match = /\\?(?<dir>content\\(?:.*))\\(?<file>[^.]+\.mdx)$/gm.exec(
+    contentPath,
+  )
+
   if (!match) return { match: false }
-  const dir = contentPath.split('\\')
-  const file = dir.pop()
-  // const { dir, file } = match.groups
-  return { match: true, dir: dir.join('\\'), file }
+  const { dir, file } = match.groups
+  return { match: true, dir, file }
 }
 
 function parseSeries(path) {

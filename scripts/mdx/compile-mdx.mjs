@@ -42,7 +42,8 @@ import { Command } from 'commander/esm.mjs'
     if (processed[mdxPath]) continue
     processed[mdxPath] = true
 
-    const parts = mdxPath.split('/')
+    let parts = mdxPath.split('/')
+    if (parts.length === 1) parts = mdxPath.split('\\')
     const slug = parts.slice(1).join('/').replace('.mdx', '')
     let series = undefined
     if (parts.length > 3) {
@@ -75,18 +76,15 @@ import { Command } from 'commander/esm.mjs'
 
     const readingTime = calculateReadingTime(mdxSource)
 
-    const [{ default: gfm }, { default: shikiCodeBlock }, ImageComponent] =
-      await Promise.all([
-        import('remark-gfm'),
-        import('./plugins/shiki/index.mjs'),
-        fsp.readFile('../../app/components/Image.tsx', 'utf8'),
-      ])
+    const [{ default: gfm }, { default: shikiCodeBlock }] = await Promise.all([
+      import('remark-gfm'),
+      import('./plugins/shiki/index.mjs'),
+    ])
 
     const { frontmatter, code } = await bundleMDX({
       source: mdxSource,
       files: {
         ...files,
-        '~/Image.tsx': ImageComponent,
       },
       xdmOptions(options) {
         options.remarkPlugins = [
@@ -101,7 +99,12 @@ import { Command } from 'commander/esm.mjs'
     })
 
     const Component = getMDXComponent(code)
-    const html = renderToString(React.createElement(Component))
+    const Image = await import('./BlogImage.js')
+    const html = renderToString(
+      React.createElement(Component, {
+        components: { BlogImage: Image.default },
+      }),
+    )
     const hasComponents = Object.keys(files).length > 0
 
     const hash = crypto
@@ -121,7 +124,7 @@ import { Command } from 'commander/esm.mjs'
         },
         series,
         html,
-        code: hasComponents ? code : undefined,
+        code: hasComponents ? code : null,
       }),
       headers: {
         authorization: `Bearer ${process.env.POST_API_KEY}`,
