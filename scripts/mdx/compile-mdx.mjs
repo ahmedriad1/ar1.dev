@@ -80,7 +80,13 @@ import { Command } from 'commander/esm.mjs'
     )
     const { frontmatter, code } = await bundleMDX({
       source: mdxSource,
-      files,
+      files: {
+        ...files,
+        Image: await fsp.readFile(
+          path.join(__dirname, '../../app/components/Image.tsx'),
+          'utf8',
+        ),
+      },
       xdmOptions(options) {
         options.remarkPlugins = [
           ...(options.remarkPlugins ?? []),
