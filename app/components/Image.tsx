@@ -1,10 +1,26 @@
-import clsx from 'clsx'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import {
-  getUnsplashImageProps,
-  isUnsplashImg,
-  useSSRLayoutEffect,
-} from '~/utils/other'
+import { useEffect, useMemo, useRef, useState, useLayoutEffect } from 'react'
+
+const classNames = (...args: any[]) => args.filter(Boolean).join(' ')
+
+const useSSRLayoutEffect =
+  typeof window === 'undefined' ? () => {} : useLayoutEffect
+
+const getUnsplashId = (src: string) => src.split('/')[1]
+
+const getUnsplashImageProps = (src: string) => {
+  const id = getUnsplashId(src)
+  const baseUrl = `https://images.unsplash.com/${id}?auto=format&fit=crop&q=auto`
+  const sizes = ['280', '560', '840', '1100', '1650', '2100', '2500', '3100']
+
+  return {
+    sizes:
+      '(max-width:1023px) 80vw, (min-width:1024px) and (max-width:1620px) 67vw, 1100px',
+    srcSet: sizes.map(size => `${baseUrl}&w=${size} ${size}w`).join(', '),
+    src: `${baseUrl}&w=1517`,
+  }
+}
+
+const isUnsplashImg = (src: string) => src.startsWith('unsplash/')
 
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   blurDataUrl?: string
@@ -49,20 +65,19 @@ const Image: React.FC<ImageProps> = ({
         <>
           <img
             src={blurDataUrl}
-            className={clsx('absolute inset-0 w-full h-full', className)}
+            className={classNames('absolute inset-0 w-full h-full', className)}
             key={blurDataUrl}
           />
           <div
-            className={clsx(
-              'absolute inset-0 w-full h-full',
-              'backdrop-blur-xl',
+            className={classNames(
+              'absolute inset-0 w-full h-full backdrop-blur-xl',
               className,
             )}
           />
         </>
       ) : (
         <div
-          className={clsx(
+          className={classNames(
             'absolute inset-0 w-full h-full bg-primary-lighter',
             className,
           )}
@@ -71,11 +86,9 @@ const Image: React.FC<ImageProps> = ({
       <img
         {...imgProps}
         ref={ref}
-        className={clsx(
+        className={classNames(
           'absolute inset-0 w-full h-full transition-opacity',
-          {
-            'opacity-0': !loaded,
-          },
+          !loaded ? 'opacity-0' : false,
           className,
         )}
         {...props}
