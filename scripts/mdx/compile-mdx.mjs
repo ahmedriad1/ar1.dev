@@ -82,7 +82,10 @@ import { Command } from 'commander/esm.mjs'
       source: mdxSource,
       files: {
         ...files,
-        Image: await fsp.readFile('../../app/components/Image.tsx', 'utf8'),
+        '~/Image.tsx': await fsp.readFile(
+          '../../app/components/Image.tsx',
+          'utf8',
+        ),
       },
       xdmOptions(options) {
         options.remarkPlugins = [
