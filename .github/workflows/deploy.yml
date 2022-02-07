@@ -42,7 +42,7 @@ jobs:
           echo "CONTENT: ${{ steps.content_changes.outputs.CONTENT }}"
 
   deploy:
-    name: Deploy
+    name: 🚀 Deploy
     needs: [changes]
     if: needs.changes.outputs.DEPLOYABLE == 'true'
     runs-on: ubuntu-latest
