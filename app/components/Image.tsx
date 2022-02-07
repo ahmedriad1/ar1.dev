@@ -29,7 +29,7 @@ interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 const Image: React.FC<ImageProps> = ({
   src,
   blurDataUrl,
-  className,
+  className = 'w-full h-full rounded-lg object-cover',
   ...props
 }) => {
   const ref = useRef<HTMLImageElement>(null)
@@ -88,7 +88,7 @@ const Image: React.FC<ImageProps> = ({
         ref={ref}
         className={classNames(
           'absolute inset-0 w-full h-full transition-opacity',
-          !loaded ? 'opacity-0' : false,
+          !loaded ? 'opacity-0' : '',
           className,
         )}
         {...props}
