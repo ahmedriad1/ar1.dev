@@ -1,5 +1,9 @@
-import ErrorPage from '~/components/ErrorPage'
+import { ErrorPage } from '~/components/Error'
 
 export default function Projects() {
-  return <ErrorPage msg="Sorry, this page is still under construction." />
+  return (
+    <ErrorPage
+      heroProps={{ title: 'Sorry, this page is still under construction.' }}
+    />
+  )
 }
