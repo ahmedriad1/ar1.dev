@@ -59,7 +59,7 @@ export default function Index() {
               <p className="text-slate-800 dark:text-light mt-4 text-sm line-clamp-3 lg:line-clamp-none">
                 {featured.frontmatter.excerpt}
               </p>
-              <Link to={featured.slug}>
+              <Link to={featured.slug} tabIndex={-1}>
                 <Button className="mt-8">Read</Button>
               </Link>
             </div>
@@ -79,7 +79,7 @@ export default function Index() {
                 {post.frontmatter.excerpt}
               </p>
             </div>
-            <Link to={post.slug}>
+            <Link to={post.slug} tabIndex={-1}>
               <Button className="mt-10">Read</Button>
             </Link>
           </Card>

@@ -12,7 +12,6 @@ import {
 } from 'remix'
 import Nav from './components/Nav'
 import Spacer from './components/Spacer'
-import ErrorPage from './components/ErrorPage'
 import tailwindStyles from './styles/tailwind.css'
 import appStyles from './styles/global.css'
 import {
@@ -27,6 +26,7 @@ import type { MetaFunction, LinksFunction } from 'remix'
 import Footer from './components/Footer'
 import { getSocialMetas } from './utils/seo'
 import { Handle } from './types'
+import { ErrorPage } from './components/Error'
 
 export const handle: Handle = {
   id: 'root',
@@ -154,7 +154,11 @@ export function ErrorBoundary({ error }: { error: Error }) {
 
   return (
     <ErrorDocument>
-      <ErrorPage msg="500 - Something went wrong" error={error} />
+      <ErrorPage
+        heroProps={{ title: '500 - Something went wrong' }}
+        layout="full"
+        error={error}
+      />
     </ErrorDocument>
   )
 }
@@ -166,7 +170,10 @@ export function CatchBoundary() {
   if (caught.status === 404) {
     return (
       <ErrorDocument>
-        <ErrorPage msg="404 - Looks like you're lost" />
+        <ErrorPage
+          heroProps={{ title: "404 - Looks like you're lost" }}
+          layout="full"
+        />
       </ErrorDocument>
     )
   }

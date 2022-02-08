@@ -54,19 +54,31 @@ interface ErrorPageProps {
   error?: Error
   heroProps: {
     title: string
-    subtitle: string
+    subtitle?: string
   }
+  layout?: 'full' | 'normal'
 }
 
-export const ErrorPage = ({ error, heroProps }: ErrorPageProps) => {
+export const ErrorPage = ({
+  error,
+  heroProps,
+  layout = 'normal',
+}: ErrorPageProps) => {
   return (
-    <div className="flex-1 flex flex-col justify-center items-center w-full h-screen text-center relative pt-12 overflow-hidden">
-      <ErrorOverlay />
+    <div
+      className={clsx(
+        'flex-1 flex flex-col justify-center items-center w-full h-screen text-center relative overflow-hidden',
+        layout === 'normal' && 'pt-12',
+      )}
+    >
       {error && process.env.NODE_ENV === 'development' ? (
         <RedBox error={error} />
       ) : null}
+      <ErrorOverlay />
       <H1 className="font-bold">{heroProps.title}</H1>
-      <Paragraph className="mt-10">{heroProps.subtitle}</Paragraph>
+      {heroProps.subtitle ? (
+        <Paragraph className="mt-10">{heroProps.subtitle}</Paragraph>
+      ) : null}
       <Link to="/">
         <Button className="mt-10">
           <ArrowNarrowLeftIcon className="inline w-5 h-5 mr-2 align-middle" />
