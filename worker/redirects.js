@@ -15,11 +15,13 @@ export async function matchRedirect(req) {
   const reqUrl = new URL(req.url)
 
   for (const redirect of redirects) {
+    console.log(`Redirect: ${redirect}`)
     if (
       !redirect.methods.includes('*') &&
       !redirect.methods.includes(req.method)
     )
       continue
+    console.log(`still running, ${reqUrl.pathname}`)
 
     const match = reqUrl.pathname.match(new RegExp(redirect.from))
     if (!match) continue

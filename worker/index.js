@@ -11,13 +11,9 @@ const handleRedirect = async event => {
   const asset = await handleAsset(event, build)
   if (asset) return asset
 
-  try {
-    const location = await matchRedirect(event.request)
-    if (location) return Response.redirect(location, 307)
-    return handler(event)
-  } catch {
-    return handler(event)
-  }
+  const location = await matchRedirect(event.request)
+  if (location) return Response.redirect(location, 307)
+  return handler(event)
 }
 
 addEventListener('fetch', event => {
