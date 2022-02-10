@@ -12,6 +12,7 @@ jobs:
     outputs:
       DEPLOYABLE: ${{ steps.deploy_changes.outputs.DEPLOYABLE }}
       CONTENT: ${{ steps.content_changes.outputs.CONTENT }}
+      REDIRECTS_CHANGED: ${{ steps.redirects_changes.outputs.REDIRECTS_CHANGED }}
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v2
