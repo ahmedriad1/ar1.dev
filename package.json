@@ -14,6 +14,7 @@
     "dev:css": "tailwindcss -i styles/tailwind.css -o app/styles/tailwind.css --watch",
     "dev:remix": "remix watch",
     "dev:content": "node ./scripts/watch-content.js",
+    "dev:redirects": "node ./scripts/watch-redirects.js",
     "build": "npm run build:css && npm run build:remix && node ./scripts/generate-build-info.js",
     "build:css": "tailwindcss -i styles/tailwind.css -o app/styles/tailwind.css --minify",
     "build:remix": "remix build",

@@ -1,7 +1,7 @@
 import { compile as compileRedirectPath } from 'path-to-regexp'
 
-const getPathname = (url, params) =>
-  compileRedirectPath(url, {
+const getPathname = (pathname, params) =>
+  compileRedirectPath(pathname, {
     encode: encodeURIComponent,
   })(params)
 
@@ -15,13 +15,11 @@ export async function matchRedirect(req) {
   const reqUrl = new URL(req.url)
 
   for (const redirect of redirects) {
-    console.log(`Redirect: ${redirect}`)
     if (
       !redirect.methods.includes('*') &&
       !redirect.methods.includes(req.method)
     )
       continue
-    console.log(`still running, ${reqUrl.pathname}`)
 
     const match = reqUrl.pathname.match(new RegExp(redirect.from))
     if (!match) continue
@@ -42,7 +40,7 @@ export async function matchRedirect(req) {
     for (const [key, value] of reqUrl.searchParams.entries())
       toUrl.searchParams.append(key, value)
 
-    toUrl.pathname = getPathname(redirect.toUrl, params)
+    toUrl.pathname = getPathname(toUrl.pathname, params)
     return toUrl.toString()
   }
 

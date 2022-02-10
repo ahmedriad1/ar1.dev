@@ -1,40 +1,51 @@
 const https = require('https')
+const http = require('http')
 const fs = require('fs')
+const path = require('path')
 
 const apiKey = process.env.POST_API_KEY
 const apiUrl = process.env.API_URL
 
-const redirectsFile = fs.readFileSync('../_redirects', 'utf8')
+const isDev = process.env.NODE_ENV === 'development'
+
+const redirectsFile = fs.readFileSync(
+  isDev ? path.resolve('_redirects') : '../_redirects',
+  'utf8',
+)
 
 function updateRedirects() {
   const url = new URL(`${apiUrl}/update-redirects`)
 
-  return new Promise((resolve, reject) => {
-    const req = https
-      .request(
-        {
-          method: 'POST',
-          hostname: url.hostname,
-          path: url.pathname,
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-          },
-        },
-        res => {
-          let data = ''
-          res.on('data', d => {
-            data += d
-          })
+  const options = {
+    method: 'POST',
+    hostname: url.hostname,
+    path: url.pathname,
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
+  }
 
-          res.on('end', () => {
-            try {
-              resolve(JSON.parse(data))
-            } catch (error) {
-              reject(error)
-            }
-          })
-        },
-      )
+  const isLocal = url.hostname === 'localhost' || url.hostname === '127.0.0.1'
+  if (isLocal) options.port = url.port
+
+  const fetch = isLocal ? http : https
+
+  return new Promise((resolve, reject) => {
+    const req = fetch
+      .request(options, res => {
+        let data = ''
+        res.on('data', d => {
+          data += d
+        })
+
+        res.on('end', () => {
+          try {
+            resolve(JSON.parse(data))
+          } catch (error) {
+            reject(error)
+          }
+        })
+      })
       .on('error', e => {
         reject(e)
       })
