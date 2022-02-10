@@ -4,8 +4,8 @@ import handleRedirect from './_redirects'
 
 const handler = createEventHandler({ build })
 
-addEventListener('fetch', event => {
-  const redirect = handleRedirect(event)
+addEventListener('fetch', async event => {
+  const redirect = await handleRedirect(event)
   if (redirect) return event.respondWith(redirect)
 
   handler(event)
