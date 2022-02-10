@@ -1,10 +1,12 @@
 import { createEventHandler } from '@remix-run/cloudflare-workers'
-
 import * as build from '../build'
+import handleRedirect from './_redirects'
 
 const handler = createEventHandler({ build })
-const handleFetch = event => {
-  const url = new URL(event.request.url)
+
+addEventListener('fetch', event => {
+  const redirect = handleRedirect(event)
+  if (redirect) return event.respondWith(redirect)
+
   handler(event)
-}
-addEventListener('fetch', handleFetch)
+})

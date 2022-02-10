@@ -6,7 +6,7 @@
   "main": "dist/worker.js",
   "sideEffects": false,
   "scripts": {
-    "clean": "rimraf ./dist ./build ./public/build ./app/styles/tailwind.css",
+    "clean": "rimraf ./dist ./build ./public/build",
     "postinstall": "remix setup cloudflare-workers",
     "start": "miniflare --build-command \"npm run dev:worker\" --watch",
     "dev:worker": "cross-env NODE_ENV=development node ./scripts/build.js",
