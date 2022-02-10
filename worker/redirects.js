@@ -8,31 +8,18 @@ const getPathname = (url, params) =>
 /**
  *
  * @param {Request} req
- * @returns {string | null}
  */
 export async function matchRedirect(req) {
   const redirects = (await REDIRECTS.get('$$redirects', 'json')) || []
-  console.log('DEBUG: redirects', redirects)
 
-  const host = req.headers.get('X-Forwarded-Host') ?? req.headers.get('host')
-  const protocol = host?.includes('localhost') ? 'http' : 'https'
-
-  let reqUrl
-
-  try {
-    reqUrl = new URL(`${protocol}://${host}${req.url}`)
-  } catch (error) {
-    console.error(`Invalid URL: ${protocol}://${host}${req.url}`)
-    return null
-  }
+  const reqUrl = new URL(req.url)
 
   for (const redirect of redirects) {
     if (
       !redirect.methods.includes('*') &&
       !redirect.methods.includes(req.method)
-    ) {
+    )
       continue
-    }
 
     const match = reqUrl.pathname.match(new RegExp(redirect.from))
     if (!match) continue
@@ -47,7 +34,7 @@ export async function matchRedirect(req) {
 
     const toUrl = new URL(redirect.toUrl)
 
-    toUrl.protocol = protocol
+    toUrl.protocol = reqUrl.protocol
     if (toUrl.host === 'same_host') toUrl.host = reqUrl.host
 
     for (const [key, value] of reqUrl.searchParams.entries())
@@ -56,4 +43,6 @@ export async function matchRedirect(req) {
     toUrl.pathname = getPathname(redirect.toUrl, params)
     return toUrl.toString()
   }
+
+  return null
 }
