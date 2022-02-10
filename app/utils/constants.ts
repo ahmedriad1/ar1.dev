@@ -1,5 +1,3 @@
-// export const siteTitle = 'Ahmed'
-
 export const config = {
   title: 'Ahmed',
   description: `I'm Ahmed, a javascript enthusiast, full-stack developer, coffee-lover, and a student.`,
