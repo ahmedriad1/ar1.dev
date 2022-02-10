@@ -12,10 +12,9 @@ export const action: ActionFunction = async ({ request }) => {
     const data = await request.json()
     const redirectsFile = data.redirects
     console.log(`Updating redirects file...`)
-    await Promise.all(
-      parseRedirects(redirectsFile).map(redirect =>
-        REDIRECTS.put(redirect.from, redirect.to),
-      ),
+    await REDIRECTS.put(
+      '$$redirects',
+      JSON.stringify(parseRedirects(redirectsFile)),
     )
     console.log(`Redirects updated.`)
 

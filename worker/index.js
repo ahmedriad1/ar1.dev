@@ -3,6 +3,7 @@ import {
   handleAsset,
 } from '@remix-run/cloudflare-workers'
 import * as build from '../build'
+import { matchRedirect } from './redirects'
 
 const handler = createRequestHandler({ build })
 
@@ -10,11 +11,13 @@ const handleRedirect = async event => {
   const asset = await handleAsset(event, build)
   if (asset) return asset
 
-  const path = new URL(event.request.url).pathname
-  const location = await REDIRECTS.get(path)
-  if (location) return Response.redirect(location, 307)
-
-  return handler(event)
+  try {
+    const location = await matchRedirect(event.request)
+    if (location) return Response.redirect(location, 307)
+    return handler(event)
+  } catch {
+    return handler(event)
+  }
 }
 
 addEventListener('fetch', event => {
