@@ -9,7 +9,7 @@
     "clean": "rm -rf dist build public/build",
     "postinstall": "remix setup cloudflare-workers",
     "start": "miniflare --build-command \"npm run dev:worker\" --watch",
-    "dev:worker": "esbuild --define:process.env.NODE_ENV='\"development\"' --bundle --sourcemap --outdir=dist ./worker",
+    "dev:worker": "cross-env NODE_ENV=development node ./scripts/build.js",
     "dev": "npm run clean && pm2-dev ./pm2.config.js",
     "dev:css": "tailwindcss -i styles/tailwind.css -o app/styles/tailwind.css --watch",
     "dev:remix": "remix watch",
@@ -17,10 +17,9 @@
     "build": "npm run build:css && npm run build:remix && node ./scripts/generate-build-info.js",
     "build:css": "tailwindcss -i styles/tailwind.css -o app/styles/tailwind.css --minify",
     "build:remix": "remix build",
-    "build:worker": "esbuild --define:process.env.NODE_ENV='\"production\"' --minify --bundle --sourcemap --outdir=dist ./worker",
+    "build:worker": "cross-env NODE_ENV=production node ./scripts/build.js",
     "debug": "miniflare --debug --build-command \"npm run dev:worker\" --watch",
-    "deploy": "npm run build && wrangler publish",
-    "act": "act compile-mdx -j compile --secret-file .env"
+    "deploy": "npm run build && wrangler publish"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.3",
@@ -46,7 +45,7 @@
     "@types/react": "^17.0.24",
     "@types/react-dom": "^17.0.9",
     "chokidar": "^3.5.2",
-    "concurrently": "^7.0.0",
+    "cross-env": "^7.0.3",
     "esbuild": "0.13.14",
     "esbuild-runner": "^2.2.1",
     "miniflare": "2.0.0-next.3",
