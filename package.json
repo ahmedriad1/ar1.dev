@@ -6,7 +6,7 @@
   "main": "dist/worker.js",
   "sideEffects": false,
   "scripts": {
-    "clean": "rm -rf dist build public/build",
+    "clean": "rimraf ./dist ./build ./public/build ./app/styles/tailwind.css",
     "postinstall": "remix setup cloudflare-workers",
     "start": "miniflare --build-command \"npm run dev:worker\" --watch",
     "dev:worker": "cross-env NODE_ENV=development node ./scripts/build.js",
@@ -52,6 +52,7 @@
     "node-fetch": "^2.6.6",
     "patch-package": "^6.4.7",
     "prettier": "^2.5.1",
+    "rimraf": "^3.0.2",
     "tailwindcss": "^3.0.7",
     "typescript": "^4.1.2"
   },
