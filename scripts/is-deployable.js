@@ -17,7 +17,10 @@ async function go() {
   const isDeployable =
     !changedFiles ||
     changedFiles.length === 0 ||
-    changedFiles.some(({ filename }) => !filename.startsWith('content'))
+    changedFiles.some(
+      ({ filename }) =>
+        !filename.startsWith('content') && filename !== '_redirects',
+    )
 
   console.error(
     isDeployable

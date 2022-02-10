@@ -6,7 +6,8 @@ route = "ar1.dev/*"
 workers_dev = true
 
 kv_namespaces = [
-  { binding = "CONTENT",  preview_id = "3e3bb6bbb89641c2850c135af2a8c3a5", id = "61bae27641594c6eac12dcc6f94c549a" }
+  { binding = "CONTENT",  preview_id = "3e3bb6bbb89641c2850c135af2a8c3a5", id = "61bae27641594c6eac12dcc6f94c549a" },
+  { binding = "REDIRECTS", id = "925f0a5a464c4f61a2bd0f85c6973fb2" }
 ]
 
 [site]
