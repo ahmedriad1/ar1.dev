@@ -7,7 +7,7 @@ import * as build from '../build'
 const handler = createRequestHandler({ build })
 
 const handleRedirect = async event => {
-  const asset = await handleAsset(event)
+  const asset = await handleAsset(event, build)
   if (asset) return asset
 
   const path = new URL(event.request.url).pathname
