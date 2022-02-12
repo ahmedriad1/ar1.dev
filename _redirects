@@ -8,6 +8,7 @@
 /(.*).env         https://www.youtube.com/watch?v=dQw4w9WgXcQ
 /(.*).png         https://www.youtube.com/watch?v=PEZxjMewOk0
 /(.*).jpg         https://www.youtube.com/watch?v=PEZxjMewOk0
+/(.*).pdf         https://www.youtube.com/watch?v=PEZxjMewOk0
 /(.*).mp4         https://www.youtube.com/watch?v=PEZxjMewOk0
 
 # Aliases
