@@ -5,7 +5,11 @@ const [currentCommitSha] = process.argv.slice(2)
 
 async function go() {
   const buildInfo = JSON.parse(
-    await request.get('https://ar1.dev/build/info.json'),
+    await request.get({
+      host: 'ar1.dev',
+      path: '/build/info.json',
+      protocol: 'https',
+    }),
   )
 
   const compareCommitSha = buildInfo.commit.sha

@@ -13,9 +13,12 @@ const redirectsFile = fs.readFileSync(
 )
 
 function updateRedirects() {
+  const url = new URL(`${apiUrl}/update-redirects`)
   return JSON.parse(
     await request.post({
-      ...new URL(`${apiUrl}/update-redirects`),
+      host: url.host,
+      path: url.pathname,
+      protocol: url.protocol,
       data: JSON.stringify({ redirects: redirectsFile }),
       headers: {
         Authorization: `Bearer ${apiKey}`,
