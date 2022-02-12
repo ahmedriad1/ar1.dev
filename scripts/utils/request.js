@@ -10,7 +10,7 @@ const https = require('https')
 const base = (options, method = 'GET') => {
   const reqUrl = typeof options === 'string' ? new URL(options) : options
 
-  const protocol = reqUrl.protocol === 'https' ? https : http
+  const protocol = reqUrl.protocol.startsWith('https') ? https : http
 
   const reqOptions = { ...reqUrl, method }
 
