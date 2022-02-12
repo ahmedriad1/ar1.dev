@@ -12,7 +12,7 @@ const redirectsFile = fs.readFileSync(
   'utf8',
 )
 
-function updateRedirects() {
+async function updateRedirects() {
   return JSON.parse(
     await request.post(
       `${apiUrl}/update-redirects`,
