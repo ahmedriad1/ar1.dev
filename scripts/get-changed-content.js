@@ -10,7 +10,7 @@ async function go() {
     await request.get({
       host: 'ar1.dev',
       path: '/api/get-content-sha',
-      protocol: 'https',
+      protocol: 'https:',
     }),
   )
   const compareCommitSha = buildInfo.commit.sha

@@ -8,7 +8,7 @@ async function go() {
     await request.get({
       host: 'ar1.dev',
       path: '/build/info.json',
-      protocol: 'https',
+      protocol: 'https:',
     }),
   )
   const compareCommitSha = buildInfo.commit.sha
