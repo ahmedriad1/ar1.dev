@@ -1,8 +1,13 @@
 // try to keep this dep-free so we don't have to install deps
-const { getChangedFiles, fetchJson } = require('./get-changed-files')
+const { getChangedFiles } = require('./get-changed-files')
+const request = require('./utils/request')
 const [currentCommitSha] = process.argv.slice(2)
+
 async function go() {
-  const buildInfo = await fetchJson('https://ar1.dev/build/info.json')
+  const buildInfo = JSON.parse(
+    await request.get('https://ar1.dev/build/info.json'),
+  )
+
   const compareCommitSha = buildInfo.commit.sha
   const changedFiles = await getChangedFiles(currentCommitSha, compareCommitSha)
   console.error('Determining whether the changed files are deployable', {
