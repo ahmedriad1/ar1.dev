@@ -1,29 +1,5 @@
 // try to keep this dep-free so we don't have to install deps
 const execSync = require('child_process').execSync
-const https = require('https')
-
-function fetchJson(url) {
-  return new Promise((resolve, reject) => {
-    https
-      .get(url, res => {
-        let data = ''
-        res.on('data', d => {
-          data += d
-        })
-
-        res.on('end', () => {
-          try {
-            resolve(JSON.parse(data))
-          } catch (error) {
-            reject(error)
-          }
-        })
-      })
-      .on('error', e => {
-        reject(e)
-      })
-  })
-}
 
 const changeTypes = {
   M: 'modified',
@@ -56,4 +32,4 @@ async function getChangedFiles(currentCommitSha, compareCommitSha) {
   }
 }
 
-module.exports = { getChangedFiles, fetchJson }
+module.exports = { getChangedFiles }

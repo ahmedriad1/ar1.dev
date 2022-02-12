@@ -1,7 +1,6 @@
-const https = require('https')
-const http = require('http')
 const fs = require('fs')
 const path = require('path')
+const request = require('./utils/request')
 
 const apiKey = process.env.POST_API_KEY
 const apiUrl = process.env.API_URL
@@ -14,44 +13,15 @@ const redirectsFile = fs.readFileSync(
 )
 
 function updateRedirects() {
-  const url = new URL(`${apiUrl}/update-redirects`)
-
-  const options = {
-    method: 'POST',
-    hostname: url.hostname,
-    path: url.pathname,
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-    },
-  }
-
-  const isLocal = url.hostname === 'localhost' || url.hostname === '127.0.0.1'
-  if (isLocal) options.port = url.port
-
-  const fetch = isLocal ? http : https
-
-  return new Promise((resolve, reject) => {
-    const req = fetch
-      .request(options, res => {
-        let data = ''
-        res.on('data', d => {
-          data += d
-        })
-
-        res.on('end', () => {
-          try {
-            resolve(JSON.parse(data))
-          } catch (error) {
-            reject(error)
-          }
-        })
-      })
-      .on('error', e => {
-        reject(e)
-      })
-    req.write(JSON.stringify({ redirects: redirectsFile }))
-    req.end()
-  })
+  return JSON.parse(
+    await request.post({
+      ...new URL(`${apiUrl}/update-redirects`),
+      data: JSON.stringify({ redirects: redirectsFile }),
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+      },
+    }),
+  )
 }
 
 async function go() {
@@ -66,8 +36,3 @@ async function go() {
   process.exit(0)
 }
 go()
-
-/*
-eslint
-  consistent-return: "off",
-*/
