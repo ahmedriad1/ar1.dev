@@ -1,22 +1,12 @@
 const http = require('http')
 const https = require('https')
 
-/**
- *
- * @param {string | http.ClientRequestArgs & {data: any}} options
- * @param {'GET' | 'POST'} method
- * @returns {Promise<string>}
- */
-const base = (options, method = 'GET') => {
-  const reqUrl = typeof options === 'string' ? new URL(options) : options
-
-  const protocol = reqUrl.protocol.startsWith('https') ? https : http
-
-  const reqOptions = { ...reqUrl, method }
+const get = url => {
+  const protocol = url.startsWith('https') ? https : http
 
   return new Promise((resolve, reject) => {
-    const req = protocol
-      .request(reqOptions, res => {
+    protocol
+      .get(url, res => {
         let data = ''
         res.on('data', d => {
           data += d
@@ -33,26 +23,53 @@ const base = (options, method = 'GET') => {
       .on('error', e => {
         reject(e)
       })
-
-    if (method === 'POST' && options?.data) {
-      req.write(options.data)
-      req.end()
-    }
   })
 }
 
 /**
  *
- * @param {string | http.ClientRequestArgs} options
+ * @param {string} url
+ * @param {any} data
+ * @param {object} extraOptions
  * @returns {Promise<string>}
  */
-const get = options => base(options, 'GET')
+const post = (url, data, extraOptions = {}) => {
+  const reqUrl = new URL(url)
+  const protocol = reqUrl.protocol.startsWith('https') ? https : http
 
-/**
- *
- * @param {string | http.ClientRequestArgs & {data: any}} options
- * @returns {Promise<string>}
- */
-const post = options => base(options, 'POST')
+  const options = {
+    method: 'POST',
+    hostname: reqUrl.hostname,
+    path: reqUrl.pathname,
+    ...extraOptions,
+  }
+
+  const isLocal = url.hostname === 'localhost' || url.hostname === '127.0.0.1'
+  if (isLocal) options.port = url.port
+
+  return new Promise((resolve, reject) => {
+    const req = protocol
+      .request(options, res => {
+        let recivedData = ''
+        res.on('data', d => {
+          recivedData += d
+        })
+
+        res.on('end', () => {
+          try {
+            resolve(recivedData)
+          } catch (error) {
+            reject(error)
+          }
+        })
+      })
+      .on('error', e => {
+        reject(e)
+      })
+
+    req.write(data)
+    req.end()
+  })
+}
 
 module.exports = { get, post }

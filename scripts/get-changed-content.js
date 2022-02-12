@@ -7,11 +7,7 @@ const [currentCommitSha] = process.argv.slice(2)
 
 async function go() {
   const buildInfo = JSON.parse(
-    await request.get({
-      host: 'ar1.dev',
-      path: '/api/get-content-sha',
-      protocol: 'https:',
-    }),
+    await request.get('https://ar1.dev/api/get-content-sha'),
   )
   const compareCommitSha = buildInfo.commit.sha
   let changedFiles = []
