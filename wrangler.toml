@@ -15,11 +15,10 @@ bucket = "./public"
 entry-point = "."
 
 [build]
-command = "npm run build"
 watch_dir = "build/index.js"
 
 [build.upload]
-format="service-worker"
+format = "service-worker"
 
 [miniflare]
 kv_persist = true
