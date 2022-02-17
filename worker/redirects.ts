@@ -1,6 +1,14 @@
 import { compile as compileRedirectPath } from 'path-to-regexp'
+import type { Key } from 'path-to-regexp'
 
-const getPathname = (pathname, params) =>
+interface Redirect {
+  methods: string[]
+  keys: Key[]
+  from: string
+  toUrl: string
+}
+
+const getPathname = (pathname: string, params: any) =>
   compileRedirectPath(pathname, {
     encode: encodeURIComponent,
   })(params)
@@ -9,8 +17,9 @@ const getPathname = (pathname, params) =>
  *
  * @param {Request} req
  */
-export async function matchRedirect(req) {
-  const redirects = (await REDIRECTS.get('$$redirects', 'json')) || []
+export async function matchRedirect(req: Request) {
+  const redirects: Redirect[] =
+    (await REDIRECTS.get('$$redirects', 'json')) || []
 
   const reqUrl = new URL(req.url)
 
@@ -24,7 +33,8 @@ export async function matchRedirect(req) {
     const match = reqUrl.pathname.match(new RegExp(redirect.from))
     if (!match) continue
 
-    const params = {}
+    const params: Record<Key['name'], string> = {}
+
     const paramValues = match.slice(1)
     for (let paramIndex = 0; paramIndex < paramValues.length; paramIndex++) {
       const paramValue = paramValues[paramIndex]

@@ -44,8 +44,9 @@ const post = (url, data, extraOptions = {}) => {
     ...extraOptions,
   }
 
-  const isLocal = url.hostname === 'localhost' || url.hostname === '127.0.0.1'
-  if (isLocal) options.port = url.port
+  const isLocal =
+    reqUrl.hostname === 'localhost' || reqUrl.hostname === '127.0.0.1'
+  if (isLocal) options.port = reqUrl.port
 
   return new Promise((resolve, reject) => {
     const req = protocol

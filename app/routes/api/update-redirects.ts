@@ -2,8 +2,6 @@ import { ActionFunction, json, redirect } from 'remix'
 import { validateToken } from '~/utils/post-api-key.server'
 import { parseRedirects } from '~/utils/redirects'
 
-declare var REDIRECTS: KVNamespace
-
 export const action: ActionFunction = async ({ request }) => {
   try {
     if (!validateToken(request))

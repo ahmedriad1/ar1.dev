@@ -3,8 +3,10 @@
  */
 module.exports = {
   appDirectory: 'app',
-  browserBuildDirectory: 'public/build',
+  assetsBuildDirectory: 'public/build',
   publicPath: '/build/',
-  serverBuildDirectory: 'build',
+  server: './worker/index.ts',
+  // serverBuildPath: 'build',
+  serverBuildTarget: 'cloudflare-workers',
   devServerBroadcastDelay: 1000,
 }

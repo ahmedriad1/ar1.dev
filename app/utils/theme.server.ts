@@ -1,8 +1,6 @@
 import { createCookieSessionStorage } from 'remix'
 import { Theme, isTheme } from './theme-provider'
 
-declare var COOKIE_SECRET: string
-
 const themeStorage = createCookieSessionStorage({
   cookie: {
     name: 'theme',

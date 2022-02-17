@@ -2,12 +2,12 @@ import {
   createRequestHandler,
   handleAsset,
 } from '@remix-run/cloudflare-workers'
-import * as build from '../build'
+import * as build from '@remix-run/dev/server-build'
 import { matchRedirect } from './redirects'
 
 const handler = createRequestHandler({ build })
 
-const handleRedirect = async event => {
+const handleRedirect = async (event: any) => {
   const asset = await handleAsset(event, build)
   if (asset) return asset
 
@@ -16,6 +16,6 @@ const handleRedirect = async event => {
   return handler(event)
 }
 
-addEventListener('fetch', event => {
+addEventListener('fetch', (event: any) => {
   event.respondWith(handleRedirect(event))
 })

@@ -1,7 +1,5 @@
 import type { Post } from '~/types'
 
-declare var CONTENT: KVNamespace
-
 export const getAllPosts = async () => {
   const slugs = await CONTENT.list({ prefix: 'blog/' })
 

@@ -5,12 +5,7 @@ const request = require('./utils/request')
 const apiKey = process.env.POST_API_KEY
 const apiUrl = process.env.API_URL
 
-const isDev = process.env.NODE_ENV === 'development'
-
-const redirectsFile = fs.readFileSync(
-  isDev ? path.resolve('_redirects') : '../_redirects',
-  'utf8',
-)
+const redirectsFile = fs.readFileSync(path.resolve('_redirects'), 'utf8')
 
 async function updateRedirects() {
   return JSON.parse(
