@@ -15,6 +15,7 @@ bucket = "./public"
 entry-point = "."
 
 [build]
+command = "echo 'Already built'"
 watch_dir = "build/index.js"
 
 [build.upload]
