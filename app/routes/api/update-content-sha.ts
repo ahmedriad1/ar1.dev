@@ -1,10 +1,8 @@
-import { validateToken } from '~/utils/post-api-key.server'
 import { ActionFunction, json, redirect } from 'remix'
+import { withApiToken } from '~/utils/posts.server'
 
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = withApiToken(async ({ request }) => {
   try {
-    if (!validateToken(request))
-      return new Response(`Unauthorized`, { status: 401 })
     const data = await request.json()
     await CONTENT.put('$$content-sha', JSON.stringify(data))
     return json({ success: true })
@@ -12,6 +10,5 @@ export const action: ActionFunction = async ({ request }) => {
     //@ts-expect-error
     return json({ message: e.message, stack: e.stack })
   }
-}
-
+})
 export const loader = () => redirect('/', { status: 404 })

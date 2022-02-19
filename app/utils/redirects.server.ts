@@ -1,7 +1,7 @@
 import { pathToRegexp, Key } from 'path-to-regexp'
 import { typedBoolean } from './other'
 
-export const parseRedirects = (redirectsString: string) => {
+const parseRedirects = (redirectsString: string) => {
   const possibleMethods = ['HEAD', 'GET', 'POST', 'PUT', 'DELETE', 'PATCH', '*']
 
   return redirectsString
@@ -54,4 +54,15 @@ export const parseRedirects = (redirectsString: string) => {
       }
     })
     .filter(typedBoolean)
+}
+
+export const saveRedirects = async (redirectsFile: any) => {
+  console.log(`Updating redirects file...`)
+
+  await REDIRECTS.put(
+    '$$redirects',
+    JSON.stringify(parseRedirects(redirectsFile)),
+  )
+
+  console.log(`Redirects updated.`)
 }
