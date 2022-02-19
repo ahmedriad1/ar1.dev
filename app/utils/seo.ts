@@ -1,11 +1,28 @@
-import { config } from './constants'
-import { getUnsplashId, isUnsplashImg } from './other'
-
-export const getSeoImage = (image: string) => {
-  if (!isUnsplashImg(image)) return image
-  const id = getUnsplashId(image)
-
-  return `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1200&h=628&q=70`
+export const config = {
+  title: 'Ahmed',
+  description: `I'm Ahmed, a javascript enthusiast, full-stack developer, coffee-lover, and a student.`,
+  social: {
+    twitter: '@ahmedriad1_',
+  },
+  image: 'https://ar1.dev/images/banner.jpg',
+  url: 'https://ar1.dev',
+  keywords: [
+    'ahmed',
+    'riad',
+    'Ahmed Riad',
+    'ahmed riad',
+    'ar1',
+    'javascript',
+    'blog',
+    'portfolio',
+    'dev',
+    'typescript',
+    'web',
+    'web dev',
+    'web development',
+    'backend',
+    'frontend',
+  ],
 }
 
 export function getSocialMetas({

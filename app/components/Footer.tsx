@@ -1,4 +1,5 @@
-import { HeartIcon, MailIcon } from '@heroicons/react/outline'
+import { HeartIcon } from '@heroicons/react/outline'
+import { MailIcon } from '@heroicons/react/solid'
 import Container from './Container'
 import { GithubIcon, TwitterIcon } from './Icons'
 import type { IconProps } from './Icons'

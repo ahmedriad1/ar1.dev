@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react'
+import { getImageProps } from './image.mjs'
 
 function toVal(mix) {
   var k,
@@ -46,22 +47,6 @@ function clsx() {
   return str
 }
 
-const getUnsplashImageProps = src => {
-  const id = getUnsplashId(src)
-  const baseUrl = `https://images.unsplash.com/${id}?auto=format&fit=crop&q=auto`
-  const sizes = ['280', '560', '840', '1100', '1650', '2100', '2500', '3100']
-
-  return {
-    sizes:
-      '(max-width:1023px) 80vw, (min-width:1024px) and (max-width:1620px) 67vw, 1100px',
-    srcSet: sizes.map(size => `${baseUrl}&w=${size} ${size}w`).join(', '),
-    src: `${baseUrl}&w=1517`,
-  }
-}
-
-const isUnsplashImg = src => src.startsWith('unsplash/')
-const getUnsplashId = src => src.split('/')[1]
-
 const Image = ({
   src,
   blurDataUrl,
@@ -69,7 +54,7 @@ const Image = ({
   ...props
 }) => {
   const imgProps = useMemo(() => {
-    return isUnsplashImg(src || '') ? getUnsplashImageProps(src) : { src }
+    return getImageProps(src)
   }, [src])
 
   return React.createElement('div', {

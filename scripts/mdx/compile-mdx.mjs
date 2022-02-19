@@ -9,6 +9,7 @@ import { renderToString } from 'react-dom/server.js'
 import { bundleMDX } from 'mdx-bundler'
 import { getMDXComponent } from 'mdx-bundler/client/index.js'
 import calculateReadingTime from 'reading-time'
+import { getImagePlaceholder } from './image.mjs'
 // import embedPlugin from './plugins/embedPlugin.mjs'
 import { Command } from 'commander/esm.mjs'
 ;(async function () {
@@ -99,7 +100,7 @@ import { Command } from 'commander/esm.mjs'
     })
 
     const Component = getMDXComponent(code)
-    const Image = await import('./BlogImage.js')
+    const Image = await import('./BlogImage.mjs')
     const html = renderToString(
       React.createElement(Component, {
         components: { BlogImage: Image.default },
@@ -150,17 +151,6 @@ import { Command } from 'commander/esm.mjs'
 
   process.exit(hasError ? 1 : 0)
 })()
-
-async function getImagePlaceholder(id) {
-  if (!id.startsWith('unsplash/')) return null
-  id = id.split('/')[1]
-
-  const img = await fetch(
-    `https://images.unsplash.com/${id}?fm=webp&fit=crop&q=auto&blur=100&w=100`,
-  )
-  const base64 = Buffer.from(await img.arrayBuffer()).toString('base64')
-  return `data:${img.headers.get('content-type')};base64,${base64}`
-}
 
 function parseSeries(path) {
   const file = fs.readFileSync(path, 'utf8')

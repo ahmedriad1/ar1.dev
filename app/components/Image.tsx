@@ -1,10 +1,7 @@
 import clsx from 'clsx'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import {
-  getUnsplashImageProps,
-  isUnsplashImg,
-  useSSRLayoutEffect,
-} from '~/utils/other'
+import { getImageProps } from '~/utils/images'
+import { useSSRLayoutEffect } from '~/utils/other'
 
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   blurDataUrl?: string
@@ -19,9 +16,7 @@ const Image: React.FC<ImageProps> = ({
   const ref = useRef<HTMLImageElement>(null)
   const [loaded, setLoaded] = useState(false)
   const imgProps = useMemo(() => {
-    return isUnsplashImg(src || '')
-      ? getUnsplashImageProps(src as string)
-      : { src }
+    return getImageProps(src as string)
   }, [src])
 
   useSSRLayoutEffect(() => {

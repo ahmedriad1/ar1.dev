@@ -46,3 +46,40 @@ export type Handle = {
     | Array<SitemapEntry | null>
     | null
 }
+
+let __ = '1D45E01E-AF44-47C4-988A-19A94EBAF55C' as const
+type __ = typeof __
+
+type PropsWeControl = 'as' | 'children' | 'refName' | 'className'
+
+type CleanProps<
+  TTag,
+  TOmitableProps extends keyof any = __,
+> = TOmitableProps extends __
+  ? Omit<PropsOf<TTag>, PropsWeControl>
+  : Omit<PropsOf<TTag>, TOmitableProps | PropsWeControl>
+
+// Add certain props that we control
+type OurProps<TTag, TSlot = any> = {
+  as?: TTag
+  children?: React.ReactNode | ((bag: TSlot) => React.ReactElement)
+  refName?: string
+}
+
+type ClassNameOverride<TTag, TSlot = any> = PropsOf<TTag> extends {
+  className?: any
+}
+  ? { className?: string | ((bag: TSlot) => string) }
+  : {}
+
+export type PropsOf<TTag = any> = TTag extends React.ElementType
+  ? React.ComponentProps<TTag>
+  : never
+
+export type Props<
+  TTag,
+  TSlot = any,
+  TOmitableProps extends keyof any = __,
+> = CleanProps<TTag, TOmitableProps> &
+  OurProps<TTag, TSlot> &
+  ClassNameOverride<TTag, TSlot>

@@ -79,12 +79,11 @@ export const ErrorPage = ({
       {heroProps.subtitle ? (
         <Paragraph className="mt-10">{heroProps.subtitle}</Paragraph>
       ) : null}
-      <Link to="/" tabIndex={-1}>
-        <Button className="mt-10">
-          <ArrowNarrowLeftIcon className="inline w-5 h-5 mr-2 align-middle" />
-          Go home
-        </Button>
-      </Link>
+
+      <Button className="mt-10" as={Link} to="/">
+        <ArrowNarrowLeftIcon className="inline w-5 h-5 mr-2 align-middle" />
+        Go home
+      </Button>
     </div>
   )
 }

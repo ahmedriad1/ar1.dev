@@ -14,8 +14,9 @@ import Spacer from '~/components/Spacer'
 import { H1, H6 } from '~/components/Typography'
 import DateFormatter from '~/components/DateFormatter'
 import Image from '~/components/Image'
-import { getSeoImage, getSocialMetas } from '~/utils/seo'
 import { getAllPosts, getPostBySlug } from '~/utils/posts.server'
+import { getSocialMetas } from '~/utils/seo'
+import { getSeoImage } from '~/utils/images'
 
 export const handle: Handle = {
   id: 'blog-post',
@@ -93,9 +94,10 @@ export default function Post() {
           {frontmatter.title}
         </H1>
 
-        <span className="block mt-4 text-gray-500 dark:text-primary-lighter font-medium">
-          <DateFormatter dateString={frontmatter.date} />
-        </span>
+        <p className="block mt-4 text-gray-500 dark:text-primary-lighter font-medium">
+          <DateFormatter dateString={frontmatter.date} /> {' - '}
+          <span>{Math.round(frontmatter.readingTime.minutes)} min read</span>
+        </p>
 
         {frontmatter.excerpt ? (
           <H6 as="p" className="mt-8 text-gray-600 dark:text-light">

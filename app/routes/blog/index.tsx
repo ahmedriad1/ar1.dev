@@ -5,8 +5,8 @@ import Container from '~/components/Container'
 import Image from '~/components/Image'
 import { H3 } from '~/components/Typography'
 import type { Handle, Post } from '~/types'
-import { config } from '~/utils/constants'
 import { getAllPosts } from '~/utils/posts.server'
+import { config } from '~/utils/seo'
 
 export const handle: Handle = {
   id: 'blog',
@@ -59,9 +59,9 @@ export default function Index() {
               <p className="text-slate-800 dark:text-light mt-4 text-sm line-clamp-3 lg:line-clamp-none">
                 {featured.frontmatter.excerpt}
               </p>
-              <Link to={featured.slug} tabIndex={-1}>
-                <Button className="mt-8">Read</Button>
-              </Link>
+              <Button className="mt-8 w-min" as={Link} to={featured.slug}>
+                Read
+              </Button>
             </div>
           </div>
         </Card>
@@ -79,9 +79,9 @@ export default function Index() {
                 {post.frontmatter.excerpt}
               </p>
             </div>
-            <Link to={post.slug} tabIndex={-1}>
-              <Button className="mt-10">Read</Button>
-            </Link>
+            <Button className="mt-10 w-min" as={Link} to={post.slug}>
+              Read
+            </Button>
           </Card>
         ))}
       </div>

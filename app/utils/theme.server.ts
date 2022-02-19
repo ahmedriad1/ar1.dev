@@ -12,7 +12,7 @@ const themeStorage = createCookieSessionStorage({
   },
 })
 
-async function getThemeSession(request: Request) {
+export const getThemeSession = async (request: Request) => {
   const session = await themeStorage.getSession(request.headers.get('Cookie'))
 
   return {
@@ -24,5 +24,3 @@ async function getThemeSession(request: Request) {
     commit: () => themeStorage.commitSession(session),
   }
 }
-
-export { getThemeSession }

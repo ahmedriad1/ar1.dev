@@ -41,19 +41,15 @@ export default function Home() {
           </h1>
 
           <div className="mt-12 flex space-x-4">
-            <Link to="/projects" tabIndex={-1}>
-              <Button>
-                See my work
-                <ChevronRightIcon className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
+            <Button as={Link} to="/projects">
+              See my work
+              <ChevronRightIcon className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
 
-            <Link to="/blog" tabIndex={-1}>
-              <Button secondary>
-                My latest posts
-                <ChevronRightIcon className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
+            <Button secondary as={Link} to="/blog">
+              My latest posts
+              <ChevronRightIcon className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
           </div>
         </Container>
       </section>
