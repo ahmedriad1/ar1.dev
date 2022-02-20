@@ -27,6 +27,7 @@ import Footer from './components/Footer'
 import { getSocialMetas } from './utils/seo'
 import { Handle } from './types'
 import { ErrorPage } from './components/Error'
+import { PageLoadingMessage } from './components/PageLoadingMessage'
 
 export const handle: Handle = {
   id: 'root',
@@ -106,6 +107,7 @@ function App() {
         />
       </head>
       <body className="w-full min-h-screen flex flex-col bg-white dark:bg-primary text-black dark:text-white  overflow-x-hidden">
+        <PageLoadingMessage />
         <Nav />
         <div className="min-h-screen">
           <Outlet />
