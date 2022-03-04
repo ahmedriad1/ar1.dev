@@ -11,6 +11,7 @@
 /(.*).gif         https://www.youtube.com/watch?v=PEZxjMewOk0
 /(.*).pdf         https://www.youtube.com/watch?v=PEZxjMewOk0
 /(.*).mp4         https://www.youtube.com/watch?v=PEZxjMewOk0
+/(.*).jpeg        https://www.youtube.com/watch?v=xRplCIGbstA
 
 # Aliases
 /post/:slug*      /blog/:slug*
