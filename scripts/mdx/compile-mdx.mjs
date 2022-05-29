@@ -22,7 +22,7 @@ import { Command } from 'commander/esm.mjs'
     )
     .option('-f, --file [files...]', 'Files to compile')
     .option('-j, --json', 'Output JSON')
-    .option('-d, --delete [files...]', 'Deleted files')
+    .option('-d, --deleted [files...]', 'Deleted files')
 
   program.parse(process.argv)
   const options = program.opts()
@@ -35,7 +35,7 @@ import { Command } from 'commander/esm.mjs'
   const rootPath = options.root
   const mdxPaths = options.file
 
-  for (let mdxPath of options.delete ?? []) {
+  for (let mdxPath of options.deleted ?? []) {
     let parts = mdxPath.split('/')
     if (parts.length === 1) parts = mdxPath.split('\\')
     const slug = parts.slice(1).join('/').replace('.mdx', '')
