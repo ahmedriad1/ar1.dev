@@ -12,7 +12,7 @@ async function getChangedFiles(currentCommitSha, compareCommitSha) {
   try {
     const lineParser = /^(?<change>\w).*?\s+(?<filename>.+$)/
     const gitOutput = execSync(
-      `git diff --name-status ${currentCommitSha} ${compareCommitSha}`,
+      `git diff --name-status ${compareCommitSha} ${currentCommitSha}`,
     ).toString()
     const changedFiles = gitOutput
       .split('\n')

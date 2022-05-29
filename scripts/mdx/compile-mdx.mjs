@@ -35,7 +35,7 @@ import { Command } from 'commander/esm.mjs'
   const rootPath = options.root
   const mdxPaths = options.file
 
-  for (let mdxPath of options.delete) {
+  for (let mdxPath of options.delete ?? []) {
     let parts = mdxPath.split('/')
     if (parts.length === 1) parts = mdxPath.split('\\')
     const slug = parts.slice(1).join('/').replace('.mdx', '')
