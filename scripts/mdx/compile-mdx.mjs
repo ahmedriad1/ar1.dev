@@ -32,8 +32,7 @@ import { Command } from 'commander/esm.mjs'
     process.exit(1)
   }
 
-  console.log(options.deleted)
-  const deletedFiles = options.deleted || []
+  const deletedFiles = Array.isArray(options.deleted) ? options.deleted : []
   for (let mdxPath of deletedFiles) {
     let parts = mdxPath.split('/')
     if (parts.length === 1) parts = mdxPath.split('\\')
