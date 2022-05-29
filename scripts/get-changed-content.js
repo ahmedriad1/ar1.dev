@@ -41,7 +41,10 @@ async function go() {
   }
   // get list of files that are content
   const contentFiles = changedFiles
-    .filter(({ filename }) => filename.startsWith('content/'))
+    .filter(
+      ({ filename, changeType }) =>
+        filename.startsWith('content/') && changeType !== 'deleted',
+    )
     .map(({ filename }) => {
       const parts = filename.split('/')
 

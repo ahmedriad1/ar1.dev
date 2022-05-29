@@ -21,9 +21,11 @@ async function getChangedFiles(currentCommitSha, compareCommitSha) {
     const changes = []
     for (const { change, filename } of changedFiles) {
       const changeType = changeTypes[change]
-      if (changeType)
-        changes.push({ changeType: changeTypes[change], filename })
-      else console.error(`Unknown change type: ${change} ${filename}`)
+      if (changeType) changes.push({ changeType, filename })
+      else
+        console.error(
+          `Unknown change type: ${changeType}(${change}) ${filename}`,
+        )
     }
     return changes
   } catch (error) {
