@@ -42,6 +42,15 @@ jobs:
         run: >-
           echo "CONTENT: ${{ steps.content_changes.outputs.CONTENT }}"
 
+      - name: 🔎 Determine deleted content
+        id: content_deletions
+        run: >-
+          echo ::set-output name=DELETED_CONTENT::$(node ./scripts/get-deleted-content.js ${{ github.sha }})
+
+      - name: ❓ Deleted content
+        run: >-
+          echo "DELETED_CONTENT: ${{ steps.content_deletions.outputs.DELETED_CONTENT }}"
+
       - name: 🔎 Determine redirects changes
         id: redirects_changes
         run: >-
@@ -130,7 +139,7 @@ jobs:
         run: cd ./scripts/mdx && npm install
 
       - name: 🚀 Compile and post MDX
-        run: cd ./scripts/mdx && node ./compile-mdx.mjs --root ../../ --json --file ${{ needs.changes.outputs.CONTENT }}
+        run: cd ./scripts/mdx && node ./compile-mdx.mjs --root ../../ --json --file ${{ needs.changes.outputs.CONTENT }} --delete ${{ needs.changes.outputs.DELETED_CONTENT }}
         env:
           API_URL: ${{ secrets.API_URL }}
           POST_API_KEY: ${{ secrets.POST_API_KEY }}

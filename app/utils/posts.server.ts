@@ -42,3 +42,9 @@ export const savePost = async (data: any) => {
 
   await CONTENT.put(data.slug, stringifiedData)
 }
+
+export const deletePostBySlug = async (slug: string) => {
+  console.log(`deleting: ${slug}`)
+  await CONTENT.delete(`blog/${slug}`)
+  return null
+}

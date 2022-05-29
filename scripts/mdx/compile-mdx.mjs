@@ -22,6 +22,7 @@ import { Command } from 'commander/esm.mjs'
     )
     .option('-f, --file [files...]', 'Files to compile')
     .option('-j, --json', 'Output JSON')
+    .option('-d, --delete [files...]', 'Deleted files')
 
   program.parse(process.argv)
   const options = program.opts()
@@ -33,6 +34,27 @@ import { Command } from 'commander/esm.mjs'
 
   const rootPath = options.root
   const mdxPaths = options.file
+
+  for (let mdxPath of options.delete) {
+    let parts = mdxPath.split('/')
+    if (parts.length === 1) parts = mdxPath.split('\\')
+    const slug = parts.slice(1).join('/').replace('.mdx', '')
+    const response = await fetch(`${process.env.API_URL}/delete-content`, {
+      method: 'post',
+      body: JSON.stringify({
+        slug,
+      }),
+      headers: {
+        authorization: `Bearer ${process.env.POST_API_KEY}`,
+      },
+    })
+    if (!response.ok) {
+      const body = await response.text()
+      console.error(`Error deleting ${mdxPath} ${body}`)
+      process.exit(1)
+    }
+  }
+
   const results = {}
   let hasError = false
   const processed = {}
