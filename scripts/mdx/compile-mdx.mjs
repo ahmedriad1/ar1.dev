@@ -32,10 +32,9 @@ import { Command } from 'commander/esm.mjs'
     process.exit(1)
   }
 
-  const rootPath = options.root
-  const mdxPaths = options.file
-
-  for (let mdxPath of options.deleted ?? []) {
+  console.log(options.deleted)
+  const deletedFiles = options.deleted || []
+  for (let mdxPath of deletedFiles) {
     let parts = mdxPath.split('/')
     if (parts.length === 1) parts = mdxPath.split('\\')
     const slug = parts.slice(1).join('/').replace('.mdx', '')
@@ -55,6 +54,8 @@ import { Command } from 'commander/esm.mjs'
     }
   }
 
+  const rootPath = options.root
+  const mdxPaths = options.file
   const results = {}
   let hasError = false
   const processed = {}
